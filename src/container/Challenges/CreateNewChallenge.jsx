@@ -7,13 +7,25 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import ContainedButton from "../../components/Button";
 import { useHistory } from "react-router";
+import Snackbar from "../../components/Snackbar";
+import { convertTimeStamp } from "../../utils/util";
 
 const CreateNewChallenge = () => {
   const history = useHistory();
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    variant: "error",
+  });
+
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const [challenge, setChallenge] = useState({
     title: "",
     description: "",
-    tags: "",
     autoComplete: [],
   });
 
@@ -41,7 +53,27 @@ const CreateNewChallenge = () => {
   };
 
   const handleSubmit = () => {
-    history.push(`${process.env.PUBLIC_URL}/challenges/view-challenges`);
+    if (!challenge.title || !challenge.autoComplete.length) {
+      setSnackbar({
+        ...snackbar,
+        open: true,
+        message: "Please enter title and select atleast one tag",
+      });
+    } else {
+      const getItem = Object.assign(
+        [],
+        JSON.parse(localStorage.getItem("scripBox"))
+      );
+
+      getItem.push({
+        title: challenge.title,
+        description: challenge.description,
+        upvoteCount: 0,
+        creationDate: new Date().toUTCString(),
+      });
+      localStorage.setItem("scripBox", JSON.stringify(getItem));
+      history.push(`${process.env.PUBLIC_URL}/challenges/view-challenges`);
+    }
   };
 
   const cancel = () => {
@@ -91,6 +123,16 @@ const CreateNewChallenge = () => {
         <ContainedButton handleClick={clearAll} label="Clear" />
         <ContainedButton handleClick={handleSubmit} label="Submit" />
       </Box>
+      {snackbar.open && (
+        <Snackbar
+          open={snackbar.open}
+          handleClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          message={snackbar.message}
+          variant={snackbar.variant}
+          hide={3000}
+        />
+      )}
     </>
   );
 };

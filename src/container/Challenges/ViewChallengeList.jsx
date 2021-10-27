@@ -6,6 +6,7 @@ import OutlinedButton from "../../components/Button";
 
 const ViewChallengeList = () => {
   const history = useHistory();
+  const data = JSON.parse(localStorage.getItem("scripBox"));
 
   const getMuiTheme = () =>
     createTheme({
@@ -20,8 +21,15 @@ const ViewChallengeList = () => {
 
   const columns = [
     {
-      name: "challengeName",
+      name: "title",
       label: "Challenge Name",
+      options: {
+        sort: false,
+      },
+    },
+    {
+      name: "description",
+      label: "Description",
       options: {
         sort: false,
       },
@@ -64,6 +72,7 @@ const ViewChallengeList = () => {
   };
 
   const handleLogout = () => {
+    localStorage.setItem("scripBox", []);
     history.push(`${process.env.PUBLIC_URL}/`);
   };
 
@@ -81,7 +90,7 @@ const ViewChallengeList = () => {
           title="Challenge List"
           options={options}
           columns={columns}
-          data={[]}
+          data={data}
         />
       </ThemeProvider>
     </div>
