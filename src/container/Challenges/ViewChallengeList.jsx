@@ -3,10 +3,15 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "../../components/Header";
 import { useHistory } from "react-router";
 import OutlinedButton from "../../components/Button";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { IconButton } from "@material-ui/core";
+import { useState } from "react";
 
 const ViewChallengeList = () => {
   const history = useHistory();
-  const data = JSON.parse(localStorage.getItem("scripBox"));
+  const [data, setData] = useState(
+    JSON.parse(localStorage.getItem("scripBox"))
+  );
 
   const getMuiTheme = () =>
     createTheme({
@@ -19,7 +24,26 @@ const ViewChallengeList = () => {
       },
     });
 
+  const handleUpVote = (id) => {
+    const updatedData = data.map((val) => {
+      if (id === val.id) {
+        val.upvoteCount = val.upvoteCount + 1;
+      }
+      return val;
+    });
+    localStorage.setItem("scripBox", JSON.stringify(updatedData));
+    setData(updatedData);
+  };
+
   const columns = [
+    {
+      name: "id",
+      label: "Id",
+      options: {
+        sort: false,
+        display: "excluded",
+      },
+    },
     {
       name: "title",
       label: "Challenge Name",
@@ -53,6 +77,13 @@ const ViewChallengeList = () => {
       label: "Action",
       options: {
         sort: false,
+        customBodyRender: (value, tableMeta, updatedValue) => {
+          return (
+            <IconButton onClick={() => handleUpVote(tableMeta.rowData[0])}>
+              <ThumbUpAltIcon color="primary" />
+            </IconButton>
+          );
+        },
       },
     },
   ];
@@ -64,7 +95,8 @@ const ViewChallengeList = () => {
     filter: false,
     viewColumns: false,
     checkbox: false,
-    selectableRows: false,
+    selectableRows: "none",
+    rowsPerPageOptions: [10, 15, 100],
   };
 
   const handleClick = () => {

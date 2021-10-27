@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import ContainedButton from "../../components/Button";
 import { useHistory } from "react-router";
 import Snackbar from "../../components/Snackbar";
+import { uuid } from "uuidv4";
 
 const CreateNewChallenge = () => {
   const history = useHistory();
@@ -65,6 +66,7 @@ const CreateNewChallenge = () => {
       );
 
       getItem.push({
+        id: uuid(),
         title: challenge.title,
         description: challenge.description,
         upvoteCount: 0,

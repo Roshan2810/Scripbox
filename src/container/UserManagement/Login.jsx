@@ -26,7 +26,7 @@ const Login = () => {
         message: "Please enter your employee id",
       });
     } else {
-      localStorage.setItem("scripBox", JSON.stringify(new Array()));
+      localStorage.setItem("scripBox", JSON.stringify([]));
       history.push(`${process.env.PUBLIC_URL}/challenges/view-challenges`);
     }
   };
