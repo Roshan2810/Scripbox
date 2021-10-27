@@ -8,7 +8,6 @@ import Stack from "@mui/material/Stack";
 import ContainedButton from "../../components/Button";
 import { useHistory } from "react-router";
 import Snackbar from "../../components/Snackbar";
-import { convertTimeStamp } from "../../utils/util";
 
 const CreateNewChallenge = () => {
   const history = useHistory();
