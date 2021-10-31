@@ -1,13 +1,16 @@
 import MUIDataTable from "mui-datatables";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { withStyles } from "@material-ui/core";
 import Header from "../../components/Header";
 import { useHistory } from "react-router";
 import OutlinedButton from "../../components/Button";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import { IconButton } from "@material-ui/core";
 import { useState } from "react";
+import GlobalStyles from "../../styles/theme-default";
 
-const ViewChallengeList = () => {
+const ViewChallengeList = (props) => {
+  const { classes } = props;
   const history = useHistory();
   const [data, setData] = useState(
     JSON.parse(localStorage.getItem("scripBox"))
@@ -19,6 +22,11 @@ const ViewChallengeList = () => {
         MUIDataTableBodyCell: {
           root: {
             backgroundColor: "#FF0000",
+          },
+        },
+        MUIDataTable: {
+          root: {
+            margin: "0 15px",
           },
         },
       },
@@ -115,17 +123,23 @@ const ViewChallengeList = () => {
           handleClick={handleClick}
           label="Create New Challenge"
         />
-        <OutlinedButton handleClick={handleLogout} label="Logout" />
-      </Header>
-      <ThemeProvider theme={getMuiTheme()}>
-        <MUIDataTable
-          title="Challenge List"
-          options={options}
-          columns={columns}
-          data={data}
+        <OutlinedButton
+          className={classes.button}
+          handleClick={handleLogout}
+          label="Logout"
         />
-      </ThemeProvider>
+      </Header>
+      <div className={classes.tableDiv}>
+        <ThemeProvider theme={getMuiTheme()}>
+          <MUIDataTable
+            title="Challenge List"
+            options={options}
+            columns={columns}
+            data={data}
+          />
+        </ThemeProvider>
+      </div>
     </div>
   );
 };
-export default ViewChallengeList;
+export default withStyles(GlobalStyles)(ViewChallengeList);

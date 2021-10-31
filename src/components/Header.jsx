@@ -1,12 +1,15 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import { withStyles } from "@material-ui/core";
+import GlobalStyles from "../styles/theme-default";
+
 const Header = (props) => {
-  const { title, children } = props;
+  const { title, children, classes } = props;
   return (
     <AppBar
       color="transparent"
       variant="elevation"
       position="static"
-      style={{ marginBottom: "2%" }}
+      className={classes.appBar}
     >
       <Toolbar>
         <Typography variant="h6" component="strong">
@@ -18,4 +21,4 @@ const Header = (props) => {
   );
 };
 
-export default Header;
+export default withStyles(GlobalStyles)(Header);

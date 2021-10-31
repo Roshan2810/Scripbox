@@ -1,11 +1,14 @@
-import { Card, CardActionArea, Typography } from "@mui/material";
+import { Card, CardActionArea, CardMedia, Typography } from "@mui/material";
 import { useState } from "react";
 import Snackbar from "../../components/Snackbar";
 import { useHistory } from "react-router-dom";
 import OutlinedTextField from "../../components/TextField";
 import OutlinedButton from "../../components/Button";
+import { withStyles } from "@material-ui/core";
+import GlobalStyles from "../../styles/theme-default";
 
-const Login = () => {
+const Login = (props) => {
+  const { classes } = props;
   const history = useHistory();
   const [empId, setEmpId] = useState("");
   const [snackbar, setSnackbar] = useState({
@@ -36,19 +39,24 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Card>
+    <div className={classes.cardDiv}>
+      <Card className={classes.card}>
         <Typography variant="h5" component="strong">
           Challenge Management System
         </Typography>
-        <CardActionArea>
+        <CardMedia className={classes.actionArea}>
           <OutlinedTextField
+            className={classes.empIdTextField}
             value={empId}
             handleChange={handleOnChange}
             label="Employee Id"
           />
-          <OutlinedButton handleClick={handleSubmit} label="Sign In" />
-        </CardActionArea>
+          <OutlinedButton
+            className={classes.signInBtn}
+            handleClick={handleSubmit}
+            label="Sign In"
+          />
+        </CardMedia>
       </Card>
       {snackbar.open && (
         <Snackbar
@@ -60,7 +68,7 @@ const Login = () => {
           hide="3000"
         />
       )}
-    </>
+    </div>
   );
 };
-export default Login;
+export default withStyles(GlobalStyles)(Login);

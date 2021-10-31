@@ -9,10 +9,12 @@ import ContainedButton from "../../components/Button";
 import { useHistory } from "react-router";
 import Snackbar from "../../components/Snackbar";
 import { uuid } from "uuidv4";
+import { withStyles } from "@material-ui/core";
+import GlobalStyles from "../../styles/theme-default";
 
-const CreateNewChallenge = () => {
+const CreateNewChallenge = (props) => {
   const history = useHistory();
-
+  const { classes } = props;
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -85,7 +87,8 @@ const CreateNewChallenge = () => {
     <>
       <Header title="Create New Challenge" />
       <Box
-        component="form"
+        className={classes.box}
+        component="div"
         // sx={{
         //   "& > :not(style)": { m: 1, width: "100%" },
         // }}
@@ -97,17 +100,21 @@ const CreateNewChallenge = () => {
           label="Title"
           value={challenge.title}
           handleChange={handleChange}
+          className={classes.challengeTextField}
         />
         <OutlinedTextField
           id="description"
           label="Description"
           value={challenge.description}
           handleChange={handleChange}
+          className={classes.challengeTextField}
         />
         <Stack spacing={3} sx={{ width: 500 }}>
           <Autocomplete
             multiple
+            fullWidth
             id="tags-outlined"
+            className={classes.challengeTextField}
             options={options}
             value={challenge.autoComplete}
             getOptionLabel={(option) => option.label}
@@ -116,13 +123,26 @@ const CreateNewChallenge = () => {
             }}
             filterSelectedOptions
             renderInput={(params) => (
-              <TextField {...params} label="Tags" placeholder="Tags" />
+              <TextField
+                fullWidth
+                {...params}
+                label="Tags"
+                placeholder="Tags"
+              />
             )}
           />
         </Stack>
         <ContainedButton handleClick={cancel} label="Cancel" />
-        <ContainedButton handleClick={clearAll} label="Clear" />
-        <ContainedButton handleClick={handleSubmit} label="Submit" />
+        <ContainedButton
+          className={classes.button}
+          handleClick={clearAll}
+          label="Clear"
+        />
+        <ContainedButton
+          className={classes.button}
+          handleClick={handleSubmit}
+          label="Submit"
+        />
       </Box>
       {snackbar.open && (
         <Snackbar
@@ -137,4 +157,4 @@ const CreateNewChallenge = () => {
     </>
   );
 };
-export default CreateNewChallenge;
+export default withStyles(GlobalStyles)(CreateNewChallenge);

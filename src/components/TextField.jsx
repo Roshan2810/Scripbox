@@ -1,9 +1,10 @@
 import { TextField } from "@material-ui/core";
 
 const OutlinedTextField = (props) => {
-  const { label, value, handleChange, id } = props;
+  const { label, value, handleChange, id, className } = props;
   return (
     <TextField
+      className={className}
       fullWidth
       color="primary"
       variant="outlined"
